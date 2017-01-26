@@ -2,25 +2,17 @@
 
 import os
 from setuptools import find_packages, setup
-from pip.req import parse_requirements
 
 with open(os.path.join(os.path.dirname(__file__), 'README.md')) as readme:
     README = readme.read()
 
-# allow setup.py to be run from any path
-os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
-
-# parse_requirements() returns generator of pip.req.InstallRequirement objects
-install_reqs = parse_requirements('requirements/base.txt', session=False)
-# e.g. ['suds==0.4']
-reqs = [str(ir.req) for ir in install_reqs]
 
 setup(
     name='enwheel',
-    version='0.0.1',
     author='CFPB',
+    version_format='{tag}.dev{commitcount}+{gitsha}',
     author_email='tech@cfpb.gov',
-    modules = 'enwheel.py',
+    packages=find_packages(),
     description=u'get wheels, generate repo',
     license='Public Domain, CC0',
     classifiers=[
@@ -34,5 +26,8 @@ setup(
     ],
     long_description=README,
     setup_requires=['setuptools-git-version'],
-    zip_safe=True,
+    zip_safe=False,
+    #entry_points = {
+    #        'console_scripts': ['enwheel=enwheel.cli:main'],
+    #    }
 )
