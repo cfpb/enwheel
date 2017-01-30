@@ -25,7 +25,7 @@ setup(
         'Operating System :: OS Independent',
     ],
     long_description=README,
-    install_requires=['docopt==0.6.2'],
+    install_requires=['docopt==0.6.2', 'semver', 'wheel', 'pip'],
     setup_requires=['setuptools-git-version'],
     zip_safe=False,
     entry_points = {
