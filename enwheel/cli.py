@@ -31,10 +31,14 @@ def filter_tags(tags, ignore_before):
         try:
             semver.parse_version_info(tag)
         except ValueError:
+            print "%s is not a valid semantic version" % tag
             continue
 
-        if semver.compare(tag, ignore_before) > 0:
+        if semver.compare(tag, ignore_before) >= 0:
             yield tag
+
+        else:
+            print "%s < %s, ignoring" % (tag, ignore_before)
 
 
 def wheel_exists(name, version):
@@ -57,11 +61,17 @@ def build_wheels_for_name(name, config):
 
     tags = tags_for_repo(repo)
 
+    has_candidates = None
+
     for tag in filter_tags(tags, ignore_before):
+        has_candidates = True
         if wheel_exists(name, tag):
             print "Wheel already exists for %s@%s" % (name, tag)
         else:
             build_wheel(repo, tag)
+
+    if not has_candidates:
+        print "no candidate tags for %s" % name
 
 
 def build_command(**kwargs):
