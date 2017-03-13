@@ -1,4 +1,5 @@
 import os
+import re
 
 from itertools import groupby
 from glob import glob
@@ -6,12 +7,16 @@ from glob import glob
 from wheel.install import WheelFile
 
 
+def normalize(name):
+    return re.sub(r"[-_.]+", "-", name).lower()
+
+
 def wrap_html(code):
     return "<!DOCTYPE html> <html> <body>" + code + " </body> </html>"""
 
 
 def write_package_html(name, wheels):
-    dir_name = 'simple/%s/' % name
+    dir_name = 'simple/%s/' % normalize(name)
     if not os.path.exists(dir_name):
         os.mkdir(dir_name)
     outfile = open(dir_name + 'index.html', "wb")
@@ -29,7 +34,7 @@ def write_index_html(package_names):
     outfile = open('simple/index.html', 'wb')
     code = ""
     for name in package_names:
-        code += '<a href="%s">%s</a><br/>' % (name, name)
+        code += '<a href="%s/">%s</a><br/>' % (normalize(name), name)
 
     document = wrap_html(code)
     outfile.write(document)

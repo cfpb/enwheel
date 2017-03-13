@@ -49,7 +49,7 @@ def wheel_exists(name, version):
 
 
 def build_wheel(repo, tag):
-        pip.main(['wheel', "git+" + repo+"@"+tag, '-wsimple/dist'])
+        pip.main(['wheel', '--no-deps', "git+" + repo+"@"+tag, '-wsimple/dist'])
 
 
 def build_wheels_for_name(name, config):
